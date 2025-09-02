@@ -1,99 +1,92 @@
-# 🚀 Automated Windows Deployment & Configuration
+# 🚀 Windows OS Automation Framework
 
-Unleash the power of streamlined Windows environment provisioning with `windows`! This project provides a robust, containerized, and fully automated solution for deploying and configuring a wide array of Microsoft Windows operating systems, from client editions like Windows 7, 8.1, 10, and 11, to server variants up to Windows Server 2025. Say goodbye to manual installations and embrace infrastructure as code for your Windows environments.
-
-Leveraging unattended XML answer files (`Unattend.xml`) and powerful shell scripting, this repository simplifies the creation of consistent, customized Windows setups for development, testing, or production scenarios.
+Unleash the power of fully automated Windows operating system provisioning! This robust framework provides a streamlined, containerized approach to deploying a vast array of Windows client and server editions, from legacy systems to the latest releases, all through unattended configuration. Say goodbye to manual installations and hello to reproducible, efficient, and scalable Windows environment setups.
 
 ## Short Description
-`windows` is a container-first project that automates the unattended installation and configuration of various Windows operating systems using pre-defined XML answer files and shell scripts, encapsulated within Docker for portability and consistency.
+
+This project offers a comprehensive, Docker-centric solution for automating the deployment of diverse Windows operating systems. Leveraging an extensive library of unattended XML configuration files and intelligent shell scripting, it transforms the traditionally complex task of Windows installation into a simple, repeatable container operation.
 
 ## ✨ Key Features
-*   **Broad OS Support**: Provision Windows client OS (7, 8.1, 10, 11) and server OS (2008R2, 2012R2, 2016, 2019, 2022, 2025) across various editions (Enterprise, IoT, LTSC, Evaluation).
-*   **Unattended XML Configuration**: Utilizes industry-standard XML answer files for hands-off operating system setup and customization.
-*   **Containerized Workflow**: Built with Docker for reproducible and isolated provisioning environments, ensuring consistent results every time.
-*   **Orchestration Ready**: Includes `compose.yml` for multi-container setups and `kubernetes.yml` for scalable deployments in cloud-native environments.
-*   **Robust CI/CD Pipeline**: Integrated with GitHub Actions (`build.yml`, `check.yml`, `hub.yml`, `test.yml`) for automated builds, testing, and deployment.
-*   **Developer-Friendly**: Features `.devcontainer.json` for a consistent and quick development environment setup using VS Code Dev Containers.
-*   **Automated Dependency Management**: Leverages Dependabot and Renovate for keeping project dependencies up-to-date and secure.
-*   **Community-Oriented**: Comprehensive issue templates (`1-issue.yml`, `2-feature.yml`, `3-bug.yml`, `4-question.yml`) encourage structured contributions and feedback.
+
+*   **Broad OS Support:** Deploy a wide spectrum of Windows versions, including Windows 7, 8.1, 10, 11, and Server editions (2008 R2 to 2025), encompassing various editions (Enterprise, IoT, LTSC, etc.) and architectures (x64, x86).
+*   **Containerized Deployments:** Built on Docker, ensuring consistent and isolated deployment environments. Seamlessly integrate with Docker Compose and Kubernetes for scalable orchestration.
+*   **Unattended Installation:** Utilize a rich collection of `.xml` assets to perform fully automated, hands-off Windows installations, eliminating manual intervention.
+*   **Robust Automation Scripts:** Powerful shell scripts (`entry.sh`, `install.sh`, `define.sh`, `samba.sh`) orchestrate the entire provisioning process, including initial setup and network configuration.
+*   **CI/CD Ready:** Integrate effortlessly with GitHub Actions for automated builds, testing, and continuous deployment workflows, ensuring project integrity and up-to-date images.
+*   **Developer-Friendly:** Includes `.devcontainer.json` for a consistent, pre-configured development environment, accelerating contributor onboarding.
+*   **Community-Driven:** Comprehensive issue templates (`1-issue.yml`, `2-feature.yml`, `3-bug.yml`, `4-question.yml`) foster clear communication and collaborative development.
 
 ## Who is this for?
-*   **DevOps Engineers**: Automate Windows VM or container provisioning as part of your CI/CD pipelines.
-*   **System Administrators**: Rapidly deploy and configure standardized Windows server or client images.
-*   **Developers**: Quickly spin up consistent Windows development or testing environments.
-*   **QA Engineers**: Ensure reproducible test beds for Windows applications.
-*   **Educators & Trainers**: Provide pre-configured Windows labs for students.
+
+*   **DevOps Engineers:** Automate the provisioning of Windows VMs for CI/CD pipelines, testing, and development environments.
+*   **System Administrators:** Streamline the deployment of new Windows servers and workstations across your infrastructure.
+*   **IT Professionals:** Create reproducible and standardized Windows images for consistent organizational rollouts.
+*   **Developers:** Quickly spin up isolated Windows environments for cross-platform application testing or development.
+*   **Researchers/Educators:** Provision specific Windows versions rapidly for experimental setups or classroom environments.
 
 ## Technology Stack & Architecture
-This project is engineered with a focus on automation, portability, and infrastructure as code principles.
-*   **Containerization**: Docker
-*   **Orchestration**: Docker Compose, Kubernetes
-*   **Automation/Scripting**: Shell Scripts (`bash`)
-*   **Configuration**: XML Unattended Answer Files (`Unattend.xml`)
-*   **CI/CD**: GitHub Actions
-*   **Development Environment**: VS Code Dev Containers
+
+This project is engineered for maximum flexibility and automation:
+
+*   **Containerization:** Docker, Docker Compose, Kubernetes
+*   **Scripting:** Bash (for core automation logic)
+*   **Configuration:** Unattended Windows XML Answer Files (`.xml`)
+*   **CI/CD:** GitHub Actions (for automated build, test, and deployment)
+*   **Development:** Dev Containers
 
 ## 📊 Architecture & Database Schema
 
-The core architecture revolves around a containerized process that consumes pre-defined Windows XML answer files and executes shell scripts to automate the installation and initial configuration of a target Windows environment.
+This project's architecture revolves around a dynamic, script-driven containerized deployment pipeline, rather than a traditional database schema. The core flow involves leveraging Docker to encapsulate the Windows installation logic and a vast library of unattended XML configuration files.
 
 ```mermaid
 graph TD
-    subgraph CI/CD (GitHub Actions)
-        A[Push/PR Trigger] --> B(Check: Linting, Format)
-        B --> C(Test: Script Validation)
-        C --> D(Build: Docker Image)
-        D --> E(Deploy: Push to Container Registry)
-    end
+    A[User/CI System] --> B(Clone Repository);
+    B --> C{Select Windows Version/Edition: <br/> `assets/*.xml`};
+    C --> D(Dockerfile & <br/> `src/*.sh` scripts);
+    D --> E[Build Docker Image];
+    E --> F[Run Container <br/> (e.g., `docker run`, `docker-compose up`, `kubectl apply`)]
+    F --> G[Automated Unattended Installation of Windows OS];
+    G --> H[Ready-to-Use Windows VM/Container];
 
-    subgraph Provisioning Workflow (Docker Container)
-        F[Docker Run / Compose / Kubernetes] --> G(Container Entrypoint: entry.sh)
-        G --> H{Select Windows Version/Edition}
-        H --> I(Load assets/*.xml)
-        I --> J(Execute src/*.sh scripts: install.sh, define.sh, samba.sh, power.sh, etc.)
-        J --> K[Automated Windows Installation/Configuration]
+    subgraph Automation & Maintenance
+        I[GitHub Actions Workflows] --> J[Automated Build];
+        J --> K[Automated Testing];
+        K --> L[Docker Hub/Registry Push];
+        L --> E;
     end
-
-    subgraph Development Environment
-        L[VS Code Dev Container] --> M(Consistent development setup)
-    end
-
-    A --> F
-    M --> J
+    I --> D;
+    I --> F;
 ```
 
 ## ⚡ Quick Start Guide
 
-To get started, you'll need Docker installed on your system.
+To get started with automating your Windows deployments:
 
-1.  **Clone the Repository**:
+1.  **Prerequisites:** Ensure you have [Docker](https://docs.docker.com/get-docker/) installed. For orchestrating multiple containers, [Docker Compose](https://docs.docker.com/compose/install/) is recommended. For Kubernetes, `kubectl` and a cluster are needed.
+
+2.  **Clone the Repository:**
     ```bash
     git clone https://github.com/grewal16/windows.git
     cd windows
     ```
 
-2.  **Build the Docker Image**:
-    This will create an image that contains all the necessary scripts and a framework to process your Windows unattended XML files.
+3.  **Build Your Docker Image:**
+    This command builds the base image containing the necessary scripts and assets.
     ```bash
-    docker build -t automated-windows-provisioning .
+    docker build -t windows-auto-deploy .
     ```
 
-3.  **Run a Windows Provisioning Task (Example)**:
-    To provision a Windows environment, you would typically mount the target Windows ISO and select one of the XML answer files from the `assets` directory. For demonstration, let's assume you have a `windows_iso.iso` at `/path/to/your/iso`.
+4.  **Initiate a Windows Deployment:**
+    Choose an XML asset from the `assets/` directory (e.g., `win10x64.xml`) and run the container, passing the desired XML file as an argument. The `entry.sh` script handles the rest.
 
     ```bash
-    docker run -it --rm \
-      -v /path/to/your/iso:/mnt/iso \
-      -v "$(pwd)/assets/win11x64.xml:/mnt/unattend.xml" \
-      automated-windows-provisioning
+    docker run --privileged -v /var/run/libvirt/libvirt-sock:/var/run/libvirt/libvirt-sock \
+    -v $(pwd)/assets/win10x64.xml:/app/config.xml windows-auto-deploy /app/config.xml
     ```
-    *Note: The actual interaction with a Windows ISO and hypervisor might require more advanced setup (e.g., using `libvirt`, `qemu`, or specific cloud provider tools) which this Docker image would orchestrate. The `src` scripts are designed to work in such environments.*
+    *Note: The `--privileged` flag and `libvirt-sock` volume mount are examples for specific virtualization scenarios. Adjust your `docker run` command based on your target virtualization environment (e.g., QEMU/KVM, VirtualBox, Hyper-V).*
 
-4.  **Using Docker Compose (for a more complex setup)**:
-    If `compose.yml` defines specific services, you can spin them up with:
-    ```bash
-    docker compose up -d
-    ```
+    For detailed usage and advanced options, refer to the `src/entry.sh` script and the example `compose.yml` and `kubernetes.yml` files.
 
 ## 📜 License
-This project is licensed under the MIT License. Refer to `license.md` for full details.
+
+This project is licensed under the MIT License.
