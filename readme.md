@@ -1,78 +1,70 @@
-
-# 🚀 Windows Environment Automation Kit
+# 🚀 Windows Automation Toolkit
 
 <p align="center"><img src="./.github/logo.png" alt="Project Logo" width="500"></p>
 
 ## Short Description
-The **Windows Environment Automation Kit** is a powerful and flexible project designed to streamline the definition, provisioning, and management of diverse Windows operating system environments. From legacy Windows Vista to modern Windows 11 and server editions, this kit empowers developers, DevOps engineers, and system administrators to create consistent, reproducible, and easily deployable Windows setups using a modern, container-driven approach. Leverage pre-configured XML answer files, robust shell scripting, and integrate seamlessly into your CI/CD pipelines.
+Unlock effortless, automated deployment and management of Windows operating systems within modern containerized environments. This project provides a comprehensive, highly configurable toolkit for provisioning a vast array of Windows versions, from desktops like Vista and Windows 11 to various Windows Server editions, leveraging pre-configured XML files and powerful shell scripts, all integrated for Docker and Kubernetes.
 
 ## ✨ Key Features
-*   **Comprehensive Windows Support:** Automated provisioning for a vast range of Windows client (Vista, 7, 8.1, 10, 11) and server (2008R2 to 2025) operating systems.
-*   **Automated Configuration:** Utilizes detailed XML answer files (`assets/*.xml`) for unattended installation and configuration, ensuring consistency across deployments.
-*   **Containerized Tooling:** Packaged with Docker (`Dockerfile`, `compose.yml`) to provide a portable and consistent environment for executing provisioning scripts.
-*   **Orchestration Ready:** Includes Kubernetes manifests (`kubernetes.yml`) for scalable deployment and management of Windows-related services or virtual machine orchestrators.
-*   **Developer-Friendly:** Integrated with VS Code Dev Containers (`.devcontainer.json`) for an immediate, ready-to-code development experience.
-*   **Robust CI/CD:** Features GitHub Actions workflows (`.github/workflows`) for automated building, checking, and testing of the project components.
-*   **Maintainable Dependencies:** Automated dependency management with Dependabot and Renovate for enhanced security and up-to-date tooling.
-*   **Structured Development:** Clear issue templates (`.github/ISSUE_TEMPLATE`) to foster effective collaboration and project management.
+*   **Extensive Windows OS Support:** Seamlessly provision a wide range of Windows versions including Vista, 7, 8.1, 10, 11, and server editions from 2008R2 up to 2025.
+*   **Automated Unattended Provisioning:** Utilize an extensive library of `.xml` configuration files for fully automated, hands-free Windows installations and setups.
+*   **Container-Native Design:** Built with `Dockerfile`, `compose.yml`, and `kubernetes.yml` for easy deployment, scaling, and management in Docker and Kubernetes ecosystems.
+*   **Powerful Scripting Engine:** Leverages robust shell scripts (`define.sh`, `install.sh`, `entry.sh`, `samba.sh`, `power.sh`) to orchestrate complex installation, configuration, and management tasks.
+*   **Integrated CI/CD Pipelines:** Ready for GitHub Actions with predefined workflows for `build`, `check`, and `test`, ensuring continuous quality and integration.
+*   **Developer-Friendly Environments:** Includes `.devcontainer.json` for standardized development setups, enabling quick onboarding and consistent development experiences.
+*   **Proactive Dependency Management:** Automated dependency updates via Dependabot and Renovate ensure your tooling and configurations stay secure and up-to-date.
 
 ## Who is this for?
-*   **DevOps Engineers:** Automate the creation and destruction of Windows VMs or environments for testing, staging, and production.
-*   **Software Developers:** Quickly spin up consistent Windows development or testing environments without manual setup overhead.
-*   **QA Engineers:** Ensure reproducible test environments across different Windows versions and configurations.
-*   **System Administrators:** Standardize Windows deployments and configurations across an organization.
-*   **Security Researchers:** Rapidly deploy specific Windows versions for vulnerability analysis or exploit development.
+This toolkit is engineered for:
+*   **DevOps Engineers** seeking to automate Windows environment provisioning.
+*   **System Administrators** needing to quickly deploy and manage multiple Windows instances.
+*   **IT Professionals** looking for consistent, repeatable Windows setups.
+*   **Developers** requiring isolated Windows testing or build environments.
+*   **QA Engineers** creating standardized Windows test beds.
 
 ## Technology Stack & Architecture
-*   **Operating Systems:** Windows (client & server) from Vista to Windows 11/Server 2025.
-*   **Automation/Scripting:** Bash Shell Scripts (`src/*.sh`), XML Answer Files (`assets/*.xml`).
-*   **Containerization:** Docker, Docker Compose.
-*   **Orchestration:** Kubernetes.
-*   **Development Environment:** VS Code Dev Containers.
-*   **CI/CD:** GitHub Actions.
-*   **Dependency Management:** Dependabot, Renovate.
+*   **Core Logic:** Shell Scripting (`Bash`)
+*   **Configuration:** XML (Unattended Windows setup files)
+*   **Containerization:** Docker (`Dockerfile`, `Docker Compose`)
+*   **Orchestration:** Kubernetes
+*   **CI/CD:** GitHub Actions
+*   **Development Environment:** Visual Studio Code DevContainers
+*   **Dependency Management:** Dependabot, Renovate
 
 ## 📊 Architecture & Database Schema
-This project's core value lies in its process for automating Windows environment setup. The following flowchart illustrates the typical workflow:
+This project facilitates a streamlined process for provisioning Windows environments.
 
 ```mermaid
 graph TD
-    A["Configuration XMLs<br/>(assets/*.xml)"] --> B{"Define Environment Parameters"};
-    B --> C["Shell Scripts<br/>(src/*.sh)"];
-    C --> D{"Build Container Image<br/>(Dockerfile)"};
-    D --> E["Deploy & Run Tooling<br/>(compose.yml / kubernetes.yml)"];
-    E --> F["Provision Windows Environment<br/>(VM, Bare Metal, etc.)"];
-    subgraph Development & Maintenance
-        G[".devcontainer.json"] --> C;
-        H[".github/workflows"] --> D;
-    end
-    F --> I{"Consistent & Reproducible<br/>Windows Environment"};
+    A[User/CI System] --> B{Build Container Image};
+    B --> C[Run Docker/K8s Container];
+    C --> D[Container Entrypoint Script];
+    D --> E[Execute Install/Config Scripts];
+    E --> F[Apply Windows XML Unattend File];
+    F --> G[Provisioned Windows OS/VM];
 ```
 
 ## ⚡ Quick Start Guide
+To get started with this powerful automation toolkit, follow these simple steps using Docker:
 
-To get started with the Windows Environment Automation Kit, you'll need Docker installed on your system.
-
-1.  **Clone the repository:**
+1.  **Clone the Repository:**
     ```bash
     git clone https://github.com/grewal16/windows.git
     cd windows
     ```
 
-2.  **Build the Docker image:**
-    This command will build the image containing all necessary scripts and tools.
+2.  **Build the Docker Image:**
+    This command will build a Docker image based on the `Dockerfile`.
     ```bash
-    docker build -t windows-automation-kit .
+    docker build -t windows-automation .
     ```
 
-3.  **Run with Docker Compose (example):**
-    Use `docker compose` to run a service that utilizes these automation scripts. You would typically modify `compose.yml` to specify which `src/*.sh` script to execute based on your provisioning needs.
-
+3.  **Run with Docker Compose (Recommended for Local Development/Testing):**
+    If you have Docker Compose installed, you can quickly spin up an environment.
     ```bash
-    docker compose up
+    docker compose up -d
     ```
-
-    *Refer to the individual shell scripts in `src/` and XML files in `assets/` for specific usage and customization options.*
+    This will start a container based on the `compose.yml` configuration, which likely uses the `windows-automation` image you just built and executes the primary entrypoint script. Refer to the `compose.yml` and `src/entry.sh` for specific runtime parameters and asset usage.
 
 ## 📜 License
-This project is licensed under the terms found in the [LICENSE.md](LICENSE.md) file.
+This project is licensed under the terms found in the [license.md](./license.md) file.
